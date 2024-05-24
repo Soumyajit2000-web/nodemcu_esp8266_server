@@ -1,0 +1,1 @@
+//Handle analog pins in future

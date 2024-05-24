@@ -5,7 +5,11 @@
     "target": "ES5",
     "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+    "forceConsistentCasingInFileNames": true
   },
   "lib": ["es2015"]
 }

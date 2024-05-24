@@ -2,42 +2,29 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
-import { DigitalPins } from "./ts/enum";
+import cors from "cors";
+import socketHandler from "./sockets";
+import digitalRoutes from "./modules/digital-module/digital";
+import dotenv from 'dotenv';
+import 'reflect-metadata';
+
+// Load environment variables from .env file
+dotenv.config();
 
 const app = express();
+app.use(express.json());
+app.use(cors());
 const server = createServer(app);
 const port = process.env.PORT || 3000;
-const hostname: string = "0.0.0.0";
+const hostname: string = process.env.HOSTNAME;
 const io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> =
   new Server(server);
 
-app.get("/", (req, res) => {
-  res.send("Hello, TypeScript Express!");
-});
+app.use(digitalRoutes(io));
 
-app.get("/send-message", (req, res) => {
-  io.emit("message", "Hi from server");
-  res.send("Message should be sent!");
-});
-
-app.get("/digital", (req, res) => {
-  const payload = { pin: DigitalPins.D1, status: 1 };
-  const stringifiedPayload = JSON.stringify(payload)
-  io.emit("digital", stringifiedPayload);
-  res.send("Digital pin updated!");
-});
-
-io.on("connection", (socket) => {
-  console.log("connected to a user.");
-  socket.on("ping", (msg) => {
-    console.log("Ping message: ", msg);
-  });
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
-  });
-});
+socketHandler(io);
 
 server.listen({ host: hostname, port: port }, () => {
   console.log(`server running at http://localhost:${port}`);
-  console.log(`server running at http://192.168.0.101:${port}`);
+  console.log(`server running at http://${hostname}:${port}`);
 });
