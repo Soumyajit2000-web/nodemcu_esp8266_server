@@ -7,6 +7,7 @@ import socketHandler from "./sockets";
 import digitalRoutes from "./modules/digital-module/digital";
 import dotenv from 'dotenv';
 import 'reflect-metadata';
+import swaggerSetup from './swagger';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -23,8 +24,9 @@ const io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> =
 app.use(digitalRoutes(io));
 
 socketHandler(io);
+swaggerSetup(app);
 
 server.listen({ host: hostname, port: port }, () => {
   console.log(`server running at http://localhost:${port}`);
-  console.log(`server running at http://${hostname}:${port}`);
+  console.log(`API docs can be found at http://${hostname}:${port}/api-docs or http://localhost:${port}/api-docs`);
 });
