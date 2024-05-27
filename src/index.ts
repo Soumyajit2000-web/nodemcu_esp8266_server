@@ -26,7 +26,7 @@ app.use(digitalRoutes(io));
 socketHandler(io);
 swaggerSetup(app);
 
-server.listen({ host: hostname, port: port }, () => {
+server.listen(port, () => {
   console.log(`server running at http://localhost:${port}`);
   console.log(`API docs can be found at http://${hostname}:${port}/api-docs or ${process.env.SERVER_UR}/api-docs`);
 });
