@@ -5,9 +5,9 @@ import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import cors from "cors";
 import socketHandler from "./sockets";
 import digitalRoutes from "./modules/digital-module/digital";
-import dotenv from 'dotenv';
-import 'reflect-metadata';
-import swaggerSetup from './swagger';
+import dotenv from "dotenv";
+import "reflect-metadata";
+import swaggerSetup from "./swagger";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -21,12 +21,13 @@ const hostname: string = process.env.HOSTNAME;
 const io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> =
   new Server(server);
 
-app.use(digitalRoutes(io));
-
 socketHandler(io);
 swaggerSetup(app);
+app.use(digitalRoutes(io));
 
 server.listen(port, () => {
   console.log(`server running at http://localhost:${port}`);
-  console.log(`API docs can be found at http://${hostname}:${port}/api-docs or ${process.env.SERVER_UR}/api-docs`);
+  console.log(
+    `API docs can be found at http://${hostname}:${port}/api-docs or ${process.env.SERVER_UR}/api-docs`
+  );
 });
