@@ -8,6 +8,7 @@ import digitalRoutes from "./modules/digital-module/digital";
 import dotenv from "dotenv";
 import "reflect-metadata";
 import swaggerSetup from "./swagger";
+import { instrument } from "@socket.io/admin-ui";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -22,9 +23,15 @@ const io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> =
   new Server(server, {
     cors: {
       origin: true,
-      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+      credentials: true,
     }
   });
+
+instrument(io, {
+  auth: false,
+  mode: "development"
+})
 
 socketHandler(io);
 swaggerSetup(app);
