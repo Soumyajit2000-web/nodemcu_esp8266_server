@@ -19,7 +19,12 @@ const server = createServer(app);
 const port = process.env.PORT || 3000;
 const hostname: string = process.env.HOSTNAME;
 const io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> =
-  new Server(server);
+  new Server(server, {
+    cors: {
+      origin: true,
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    }
+  });
 
 socketHandler(io);
 swaggerSetup(app);
