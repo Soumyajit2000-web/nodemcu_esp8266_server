@@ -22,7 +22,7 @@ const hostname: string = process.env.HOSTNAME;
 const io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> =
   new Server(server, {
     cors: {
-      origin: true,
+      origin: "*",
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
       credentials: true,
     }
